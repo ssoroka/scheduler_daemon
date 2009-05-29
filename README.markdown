@@ -58,8 +58,8 @@ capistrano deploy scripts, etc.  Something like:
 
     ruby /path/to/rails/app/scheduler/bin/scheduler_daemon.rb start
 
-About
-=====
+Author
+======
 
 Steven Soroka
 

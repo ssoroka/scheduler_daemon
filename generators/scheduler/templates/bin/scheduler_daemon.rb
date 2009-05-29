@@ -13,6 +13,8 @@ scheduler = File.join(File.dirname(__FILE__), %w(.. lib scheduler.rb))
 
 pid_dir = File.expand_path(File.join(File.dirname(__FILE__), %w(.. log)))
 
+FileUtils.mkdir_p(pid_dir)
+
 app_options = { 
   :dir_mode => :normal,
   :dir => pid_dir,
