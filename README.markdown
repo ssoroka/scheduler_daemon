@@ -35,7 +35,7 @@ Usage
 
 6. fire up the daemon in console mode to test it out
 
-    ruby scheduler/bin/scheduler\_daemon.rb run
+    ruby scheduler/bin/scheduler_daemon.rb run
 
 When you're done, get your system admin (or switch hats) to add the daemon to the system start-up, and
 capistrano deploy scripts, etc.  Something like:
