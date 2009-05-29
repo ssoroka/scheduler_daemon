@@ -35,14 +35,18 @@ Usage
 
 6. fire up the daemon in console mode to test it out
 
-    scheduler/bin/scheduler\_daemon run
+    ruby scheduler/bin/scheduler\_daemon.rb run
 
+When you're done, get your system admin (or switch hats) to add the daemon to the system start-up, and
+capistrano deploy scripts, etc.  Something like:
+
+    ruby /path/to/rails/app/scheduler/bin/scheduler_daemon.rb start
 
 About
 =====
 
 Steven Soroka 
-  [@ssoroka](http://twitter.com/ssoroka)
-  [My Github repo](http://github.com/ssoroka)
-  [My blog](http://blog.stevensoroka.ca)
+  * [@ssoroka](http://twitter.com/ssoroka)
+  * [My Github repo](http://github.com/ssoroka)
+  * [My blog](http://blog.stevensoroka.ca)
   
