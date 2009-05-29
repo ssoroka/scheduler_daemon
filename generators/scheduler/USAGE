@@ -1,0 +1,6 @@
+Description:
+    Creates the scheduler folder and basic scripts for it to run
+
+Example:
+    `./script/generate scheduler`
+

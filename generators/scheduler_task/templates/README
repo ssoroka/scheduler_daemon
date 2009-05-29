@@ -1,0 +1,8 @@
+
+Awesome! Now that you've created a scheduler, you can test it out with:
+
+  ruby scheduler/bin/scheduler_daemon.rb run 
+  
+to run it in the background (a la system start-up):
+
+  ruby /path/to/rails/app/scheduler/bin/scheduler_daemon.rb start
