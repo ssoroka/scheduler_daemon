@@ -45,8 +45,9 @@ capistrano deploy scripts, etc.  Something like:
 About
 =====
 
-Steven Soroka 
-  * [@ssoroka](http://twitter.com/ssoroka)
-  * [My Github repo](http://github.com/ssoroka)
-  * [My blog](http://blog.stevensoroka.ca)
+Steven Soroka
+
+* [@ssoroka](http://twitter.com/ssoroka)
+* [My Github repo](http://github.com/ssoroka)
+* [My blog](http://blog.stevensoroka.ca)
   
