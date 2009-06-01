@@ -11,8 +11,12 @@ require 'rufus/scheduler'
 
 # hijack puts() to include a timestamp
 def puts(*args)
-  printf("[#{Time.zone.now.to_s}] ")
+  printf("[#{now}] ")
   super(*args)
+end
+
+def now
+  Time.respond_to?(:zone) ? Time.zone.now.to_s : Time.now.to_s
 end
 
 # load all custom tasks
@@ -27,7 +31,7 @@ Dir[File.join(File.dirname(__FILE__), %w(scheduled_tasks *.rb))].each{|f|
   end
 }
 
-puts "Starting Scheduler at #{Time.now.to_s(:date_with_time)}"
+puts "Starting Scheduler at #{now}"
 
 # tasks need to call ActiveRecord::Base.connection_pool.release_connection after running to
 # release the connection back to the connection pool, Rails wont handle it for us here.
