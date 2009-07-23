@@ -6,6 +6,9 @@ Dir.chdir(rails_root) do
   puts "Loaded #{Rails.env} environment"
 end
 
+# allow ruby daemons/bin/task_runner.rb run -- --only=toadcamp,newsfeed
+load_only = ARGV.detect{|arg| arg =~ /^--only/}.split('=').last.split(',')
+
 require 'eventmachine'
 require 'rufus/scheduler'
 
@@ -19,10 +22,12 @@ end
 tasks = []
 Dir[File.join(File.dirname(__FILE__), %w(scheduled_tasks *.rb))].each{|f|
   begin
-    require f
-    filename = f.split('/').last.split('.').first
-    puts "Loading task #{filename}..."
-    tasks << filename.camelcase.constantize # path/newsfeed_task.rb => NewsfeedTask
+    unless load_only.any? && load_only.all?{|m| f !~ Regexp.new(Regexp.escape(m)) }
+      require f
+      filename = f.split('/').last.split('.').first
+      puts "Loading task #{filename}..."
+      tasks << filename.camelcase.constantize # path/newsfeed_task.rb => NewsfeedTask
+    end
   rescue
   end
 }
@@ -43,20 +48,8 @@ EventMachine::run {
   end
 
   def scheduler.handle_exception(job, exception)
-    puts "job #{job.job_id} caught exception '#{exception}'"
+    puts "[#{Rails.env}] scheduler job #{job.job_id} caught exception #{exception.inspect}"
+    # If your team all hangs out in Campfire, you might want to try
+    # something like Tinder here to write these messages out to campfire.
   end
 }
-
-# # other examples:
-# scheduler.cron '0 22 * * 1-5' do
-#   # every day of the week at 00:22
-#   puts 'activate security system'
-# end
-# 
-# scheduler.every '2d', :timeout => '40m' do
-#   begin
-#     run_backlog_cleaning()
-#   rescue Rufus::Scheduler::TimeOutError => toe
-#     # timeout occurred
-#   end
-# end

@@ -56,7 +56,18 @@ fire up the daemon in console mode to test it out
 When you're done, get your system admin (or switch hats) to add the daemon to the system start-up, and
 capistrano deploy scripts, etc.  Something like:
 
-    ruby /path/to/rails/app/scheduler/bin/scheduler_daemon.rb start
+    RAILS_ENV=production ruby /path/to/rails/app/scheduler/bin/scheduler_daemon.rb start
+
+Test individual tasks like so:
+
+    ruby daemons/bin/task_runner.rb run -- --only=task_name1,task_name2
+
+To Do
+=====
+
+- Settings file for certain variables like log directory
+- dynamically add and remove tasks while daemon is running (? anyone want this?)
+- tinder/campfire integration
 
 Author
 ======

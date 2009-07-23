@@ -1,0 +1,6 @@
+Version 0.2.0
+
+- syntax to load up only selected tasks for testing, by partial name:
+
+    ruby daemons/bin/task_runner.rb run -- --only=toadcamp,newsfeed
+    
