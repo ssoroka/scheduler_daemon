@@ -20,11 +20,11 @@ Install the plugin
 
     script/plugin install git://github.com/ssoroka/scheduler_daemon.git
 
-<!-- Install required gems
+Install required gems
 
     gem sources -a http://gems.github.com # if you haven't already...
 
-    sudo gem install daemons rufus-scheduler eventmachine -->
+    sudo gem install daemons rufus-scheduler eventmachine chronic
 
 If you want to be able to use english time descriptions in your scheduled tasks, like:
 
