@@ -1,3 +1,7 @@
+Version 0.3.0
+
+add a default task to delete old AR sessions
+
 Version 0.2.0
 
 - syntax to load up only selected tasks for testing, by partial name:

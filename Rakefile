@@ -20,6 +20,10 @@ begin
     gem.email = "ssoroka78@gmail.com"
     gem.homepage = "http://github.com/ssoroka/scheduler_daemon"
     gem.authors = ["Steven Soroka"]
+    gem.add_dependency('eventmachine', '>= 0.12.8')
+    gem.add_dependency('daemons', '>= 1.0.10')
+    gem.add_dependency('rufus-scheduler', '>= 2.0.1')
+    gem.add_dependency('chronic', '>= 0.2.0')
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 
