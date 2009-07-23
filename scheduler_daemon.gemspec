@@ -12,7 +12,8 @@ Gem::Specification.new do |s|
     "README.markdown"
   ]
   s.files = [
-    "CHANGES",
+    ".gitignore",
+     "CHANGES",
      "MIT-LICENSE",
      "README.markdown",
      "Rakefile",
@@ -29,6 +30,8 @@ Gem::Specification.new do |s|
      "install.rb",
      "lib/scheduler.rb",
      "scheduler_daemon.gemspec",
+     "spec/daemon_spec.rb",
+     "spec/spec_helper.rb",
      "uninstall.rb"
   ]
   s.homepage = %q{http://github.com/ssoroka/scheduler_daemon}
