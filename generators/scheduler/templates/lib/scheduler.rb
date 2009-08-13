@@ -7,10 +7,20 @@ Dir.chdir(rails_root) do
 end
 
 # allow ruby daemons/bin/task_runner.rb run -- --only=toadcamp,newsfeed
-load_only = ARGV.detect{|arg| arg =~ /^--only/}.split('=').last.split(',')
+load_only = []
+if only_arg = ARGV.detect{|arg| arg =~ /^--only/}
+  load_only = only_arg.split('=').last.split(',')
+end
+
+# allow ruby daemons/bin/task_runner.rb run -- --except=toadcamp
+load_except = []
+if except_arg = ARGV.detect{|arg| arg =~ /^--except/}
+  load_except = except_arg.split('=').last.split(',')
+end
 
 require 'eventmachine'
 require 'rufus/scheduler'
+require File.join(File.dirname(__FILE__), 'scheduler_task')
 
 # hijack puts() to include a timestamp
 def puts(*args)
@@ -18,9 +28,18 @@ def puts(*args)
   super(*args)
 end
 
-# load all custom tasks
+# select which tasks to run
 tasks = []
-Dir[File.join(File.dirname(__FILE__), %w(scheduled_tasks *.rb))].each{|f|
+task_files = Dir[File.join(File.dirname(__FILE__), %w(scheduled_tasks *.rb))]
+if load_only.any?
+  task_files.reject!{|f| load_only.all?{|m| f !~ Regexp.new(Regexp.escape(m))}}
+end
+if load_except.any?
+  task_files.reject!{|f| load_except.any?{|m| f =~ Regexp.new(Regexp.escape(m))}}
+end
+
+# load all custom tasks
+task_files.each{|f|
   begin
     unless load_only.any? && load_only.all?{|m| f !~ Regexp.new(Regexp.escape(m)) }
       require f
@@ -28,9 +47,16 @@ Dir[File.join(File.dirname(__FILE__), %w(scheduled_tasks *.rb))].each{|f|
       puts "Loading task #{filename}..."
       tasks << filename.camelcase.constantize # path/newsfeed_task.rb => NewsfeedTask
     end
-  rescue
+  rescue Exception => e
+    msg = "Error loading task #{filename}: #{e.class.name}: #{e.message}"
+    puts msg
+    puts e.backtrace.join("\n")
+    # Might want to create a class to talk to your team and do something like.. 
+    # Campfire.say "#{msg}, see log for backtrace" if Rails.env.production? || Rails.env.staging?
   end
 }
+
+exit if Rails.env.test? # just skip this and quit in test mode, otherwise I pretty much can't test this.
 
 puts "Starting Scheduler at #{Time.now.to_s(:date_with_time)}"
 
@@ -48,8 +74,11 @@ EventMachine::run {
   end
 
   def scheduler.handle_exception(job, exception)
-    puts "[#{Rails.env}] scheduler job #{job.job_id} caught exception #{exception.inspect}"
+    msg = "[#{Rails.env}] scheduler job #{job.job_id} (#{job.tags * ' '}) caught exception #{exception.inspect}"
+    puts msg
+    puts exception.backtrace.join("\n")
     # If your team all hangs out in Campfire, you might want to try
     # something like Tinder here to write these messages out to campfire.
+    # Campfire.say "#{msg}, see log for backtrace" if Rails.env.production? || Rails.env.staging?
   end
 }
