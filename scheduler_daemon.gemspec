@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{scheduler_daemon}
-  s.version = "0.3.1"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steven Soroka"]
-  s.date = %q{2009-07-23}
+  s.date = %q{2009-08-13}
   s.email = %q{ssoroka78@gmail.com}
   s.extra_rdoc_files = [
     "README.markdown"
@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
      "generators/scheduler/templates/bin/scheduler_daemon.rb",
      "generators/scheduler/templates/lib/scheduled_tasks/session_cleaner_task.rb",
      "generators/scheduler/templates/lib/scheduler.rb",
+     "generators/scheduler/templates/lib/scheduler_task.rb",
      "generators/scheduler_task/scheduler_task_generator.rb",
      "generators/scheduler_task/templates/README",
      "generators/scheduler_task/templates/scheduled_tasks/example_task.rb",
