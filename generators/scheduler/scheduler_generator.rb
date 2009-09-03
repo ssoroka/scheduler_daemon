@@ -11,6 +11,7 @@ class SchedulerGenerator < Rails::Generator::Base
 
       m.template 'bin/scheduler_daemon.rb', 'scheduler/bin/scheduler_daemon.rb'
       m.template 'lib/scheduler.rb', 'scheduler/lib/scheduler.rb'
+      m.template 'lib/scheduler_task.rb', 'scheduler/lib/scheduler_task.rb'      
       m.template 'lib/scheduled_tasks/session_cleaner_task.rb', 'scheduler/lib/scheduled_tasks/session_cleaner_task.rb'
       
       m.readme('README')

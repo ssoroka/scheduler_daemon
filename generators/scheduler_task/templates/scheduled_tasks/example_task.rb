@@ -1,4 +1,4 @@
-module <%= class_name %>Task < SchedulerTask
+class <%= class_name %>Task < SchedulerTask
   every '10s'
   
   def run
