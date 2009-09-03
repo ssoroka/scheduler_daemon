@@ -9,7 +9,7 @@
 require 'rubygems'
 require 'daemons'
 
-scheduler = File.join(File.dirname(__FILE__), %w(.. lib scheduler.rb))
+scheduler_path = File.join(File.dirname(__FILE__), %w(.. lib scheduler.rb))
 
 pid_dir = File.expand_path(File.join(File.dirname(__FILE__), %w(.. log)))
 
@@ -23,4 +23,4 @@ app_options = {
   :log_output => true
 }
 
-Daemons.run(scheduler, app_options)
+Daemons.run(scheduler_path, app_options)

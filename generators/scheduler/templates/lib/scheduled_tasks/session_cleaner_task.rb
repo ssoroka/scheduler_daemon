@@ -1,4 +1,4 @@
-class RemoveOldSessionsTask < SchedulerTask
+class SessionCleanerTask < SchedulerTask
   every '1d', :first_at => Chronic.parse('2 am')
   
   def run

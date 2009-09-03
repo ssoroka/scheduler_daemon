@@ -42,14 +42,16 @@ end
 task_files.each{|f|
   begin
     unless load_only.any? && load_only.all?{|m| f !~ Regexp.new(Regexp.escape(m)) }
+      file_name_without_suffix = f.split('/').last.split('.').first
       require f
-      filename = f.split('/').last.split('.').first
-      puts "Loading task #{filename}..."
-      tasks << filename.camelcase.constantize # path/newsfeed_task.rb => NewsfeedTask
+      task_class = file_name_without_suffix.camelize.constantize
+      puts "Loading task #{task_class}..."
+      tasks << task_class # path/newsfeed_task.rb => NewsfeedTask
     end
   rescue Exception => e
-    msg = "Error loading task #{filename}: #{e.class.name}: #{e.message}"
+    msg = "Error loading task #{file_name_without_suffix}: #{e.class.name}: #{e.message}"
     puts msg
+    # Might want to make this only in "verbose mode" - hard to see message above
     puts e.backtrace.join("\n")
     # Might want to create a class to talk to your team and do something like.. 
     # Campfire.say "#{msg}, see log for backtrace" if Rails.env.production? || Rails.env.staging?
