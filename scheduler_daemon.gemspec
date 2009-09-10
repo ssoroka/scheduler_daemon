@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{scheduler_daemon}
-  s.version = "0.4.0"
+  s.version = "0.4.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steven Soroka"]
-  s.date = %q{2009-08-13}
+  s.date = %q{2009-09-10}
   s.email = %q{ssoroka78@gmail.com}
   s.extra_rdoc_files = [
     "README.markdown"
