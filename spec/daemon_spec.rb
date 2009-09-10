@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "scheduler daemon" do
   # copy this spec to your project after installing the plugin if you want to run the specs.
+  # TODO: improve these specs so they don't depend on a rails project to run
   it "should start up and load configurations without errors" do
     results = `ruby #{Rails.root}/daemons/bin/task_runner.rb run`
     results.should include("Loading task newsfeed_task")

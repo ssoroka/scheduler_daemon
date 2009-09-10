@@ -20,6 +20,7 @@ end
 
 require 'eventmachine'
 require 'rufus/scheduler'
+require 'chronic'
 require File.join(File.dirname(__FILE__), 'scheduler_task')
 
 # hijack puts() to include a timestamp
