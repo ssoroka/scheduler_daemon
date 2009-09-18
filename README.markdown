@@ -28,7 +28,7 @@ Install required gems
 
 You'll need the chronic gem if you want to be able to use english time descriptions in your scheduled tasks, like:
 
-    scheduler.every '3h', :first_at => Chronic.parse('midnight')
+    every '3h', :first_at => Chronic.parse('midnight')
 
 generate the scheduler daemon files in your rails app:
 
@@ -41,6 +41,16 @@ generate a new scheduled task:
 
     script/generate scheduler_task MyTaskName
 
+
+Tasks support their own special DSL; commands are:
+
+    environments :production, :staging             # run only in environments listed. (:all by default)
+    every '1d'                                     # run once a day
+    every '1d', :first_at => Chronic.parse("2 am") # run once a day, starting at 2 am
+    at Cronic.parse('5 pm')                        # run once at 5 pm, today (today would be relative to scheduler start/restart)
+    cron '* 4 * * *'                               # cron style (the example is run at 4 am, I do believe)
+    in '30s'                                       # run once, 30 seconds from scheduler start/restart
+
 fire up the daemon in console mode to test it out
 
     ruby scheduler/bin/scheduler_daemon.rb run
@@ -48,7 +58,7 @@ fire up the daemon in console mode to test it out
 When you're done, get your system admin (or switch hats) to add the daemon to the system start-up, and
 capistrano deploy scripts, etc.  Something like:
 
-    RAILS_ENV=production ruby /path/to/rails/app/scheduler/bin/scheduler_daemon.rb start
+    RAILS_ENV=production ruby scheduler/bin/scheduler_daemon.rb start
 
 Run individual tasks like so:
 
