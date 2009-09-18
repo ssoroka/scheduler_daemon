@@ -6,4 +6,3 @@ Now that you've generated the scheduler daemon, try:
   script/generate scheduler_task Example
 
 and lets take a look at an example task!
-  

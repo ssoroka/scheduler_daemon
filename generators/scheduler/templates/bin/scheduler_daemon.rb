@@ -9,11 +9,10 @@
 require 'rubygems'
 require 'daemons'
 
-scheduler_path = File.join(File.dirname(__FILE__), %w(.. lib scheduler.rb))
+boot_scheduler = File.join(File.dirname(__FILE__), 'boot.rb')
+pid_dir = File.expand_path(File.join(File.dirname(__FILE__), %w(.. .. log)))
 
-pid_dir = File.expand_path(File.join(File.dirname(__FILE__), %w(.. log)))
-
-FileUtils.mkdir_p(pid_dir)
+FileUtils.mkdir_p(pid_dir) unless File.exist?(pid_dir)
 
 app_options = { 
   :dir_mode => :normal,
@@ -23,4 +22,4 @@ app_options = {
   :log_output => true
 }
 
-Daemons.run(scheduler_path, app_options)
+Daemons.run(boot_scheduler, app_options)

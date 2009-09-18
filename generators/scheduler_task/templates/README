@@ -2,7 +2,13 @@
 Awesome! Now that you've created a scheduler, you can test it out with:
 
   ruby scheduler/bin/scheduler_daemon.rb run 
-  
+
 to run it in the background (a la system start-up):
 
   ruby /path/to/rails/app/scheduler/bin/scheduler_daemon.rb start
+
+
+You'll probably want to add tests or specs for your new task.
+You can find existing specs for plugin in the scheduler_daemon/spec folder.
+
+Be sure to copy them to your spec folder if you're using rspec.

@@ -8,11 +8,13 @@ class SchedulerTask
           options.merge!(:tags => [name])
           # args = ['5s'] if Rails.env.development? # just for testing. :)
           args << options
-          
+        
           schedule.send(time, *args) do
             begin
               new.run
             ensure
+              # Note: AR's ActiveRecord::Base.connection_pool.with_connection(&block) seems broken;
+              # it doesn't release the connection properly.
               ActiveRecord::Base.connection_pool.release_connection
             end
           end
@@ -39,6 +41,22 @@ class SchedulerTask
     def cron(*args)
       @cron = args
     end
+    
+    # what environments should this task run in?
+    # accepts the usual :development, :production, as well as :all
+    #
+    # examples:
+    #   environments :all
+    #   environments :staging, :production
+    #   environments :development
+    #
+    def environments(*args)
+      @environments = args.map{|arg| arg.to_sym }
+    end
+
+    def should_run_in_current_environment?
+      @environments.nil? || @environments == [:all] || @environments.include?(RAILS_ENV.to_sym)
+    end
   end
 
   # override me to do stuff
@@ -46,3 +64,4 @@ class SchedulerTask
     nil
   end
 end
+SchedulerTask = Scheduler::SchedulerTask # alias this for backwards compatability

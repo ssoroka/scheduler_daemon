@@ -26,17 +26,9 @@ Install required gems
 
     sudo gem install daemons rufus-scheduler eventmachine chronic
 
-If you want to be able to use english time descriptions in your scheduled tasks, like:
+You'll need the chronic gem if you want to be able to use english time descriptions in your scheduled tasks, like:
 
     scheduler.every '3h', :first_at => Chronic.parse('midnight')
-
-then install Chronic:
-
-    sudo gem install chronic
-
-Add the following line to your .gitignore since logs and pids get written there.
-
-    scheduler/log
 
 generate the scheduler daemon files in your rails app:
 
@@ -58,16 +50,21 @@ capistrano deploy scripts, etc.  Something like:
 
     RAILS_ENV=production ruby /path/to/rails/app/scheduler/bin/scheduler_daemon.rb start
 
-Test individual tasks like so:
+Run individual tasks like so:
 
     ruby daemons/bin/task_runner.rb run -- --only=task_name1,task_name2
+
+Specs
+=====
+
+There are some default specs supplied, you are encouraged to write more specs for your tasks as you create them.  Use the existing spec as a template.
+
+See spec/README for more information
 
 To Do
 =====
 
-- Settings file for certain variables like log directory
-- dynamically add and remove tasks while daemon is running (? anyone want this?)
-- tinder/campfire integration
+- dynamically add and remove tasks while daemon is running (? anyone want this?) Perhaps a web interface?
 
 Author
 ======
