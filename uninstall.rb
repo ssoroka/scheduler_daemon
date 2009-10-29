@@ -1,1 +1,1 @@
-puts "Nooooooooo! but we were so good together!"
+puts "Files in lib/scheduled_tasks will be left alone."

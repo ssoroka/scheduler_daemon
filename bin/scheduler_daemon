@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+# This file launches the scheduler as a daemon.
+# USAGE: 
+# 
+#     scheduler_daemon run           # start the daemon and stay on top
+#     scheduler_daemon start         # start the daemon and stay on top
+#     scheduler_daemon stop          # stop all instances of the application
+#     scheduler_daemon restart       # stop all instances and restart them afterwards
+#
+# options can be passed to the scheduler like so:
+#
+#     scheduler_daemon start -- --except=session_cleaner
+#
+# options can be passed to the daemon:
+#
+#     scheduler_daemon start --dir=/my/rails/root/
+#
+# see README for more info
+require 'rubygems'
+require 'daemons'
+require File.expand_path(File.join(File.dirname(__FILE__), %w(.. lib loader find_rails_root)))
+
+def launch_args(options = {})
+  params = options.map{|k,v| "--#{k}=#{v}"}
+  if params.empty?
+    ARGV
+  else
+    args = ARGV.dup
+    args << '--' unless args.include?('--')
+    args + params
+  end
+end
+
+rails_root = FindRailsRoot.locate
+pid_dir    = File.expand_path(File.join(rails_root, 'log'))
+scheduler  = File.join(File.dirname(__FILE__), %w(.. lib loader scheduler_loader.rb))
+
+raise "#{pid_dir} does not exist" unless File.exist?(pid_dir)
+
+app_options = {
+  :app_name => 'scheduler_daemon',
+  :ARGV => launch_args(:dir => rails_root),
+  :dir_mode => :normal,
+  :dir => pid_dir,
+  :multiple => false,
+  :backtrace => true,
+  :log_output => true,
+  :monitor => true
+}
+
+Daemons.run(scheduler, app_options)

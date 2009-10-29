@@ -1,14 +1,14 @@
 # copy this spec to your project after installing the plugin if you want to run the specs.
 # suggested file name for this file: spec/scheduler_daemon/scheduled_tasks/session_cleaner_task_spec.rb
 
-require File.dirname(__FILE__) + '/../../spec_helper'
-require 'daemons/lib/scheduler_task'
-require 'daemons/lib/scheduled_tasks/remove_old_sessions_task'
+require File.join(File.dirname(__FILE__), %w(.. spec_helper))
+require 'scheduler/scheduler_task'
+require File.join(File.dirname(__FILE__), %w(.. .. generators scheduler templates lib scheduled_tasks session_cleaner_task))
 
-describe RemoveOldSessionsTask do
+describe SessionCleanerTask do
   before(:each) do
-    @task = RemoveOldSessionsTask.new
-    @task.stub!(:puts)
+    @task = SessionCleanerTask.new
+    @task.stub!(:log)
   end
 
   it "should remove old sessions" do

@@ -5,6 +5,6 @@ class <%= class_name %>Task < Scheduler::SchedulerTask
   
   def run
     # Your code here, eg: User.send_due_invoices!
-    # use puts for writing to log, eg: puts "I've sent invoices!"
+    # use log() for writing to scheduler daemon log, eg: log("I've sent invoices!")
   end
 end

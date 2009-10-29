@@ -1,5 +1,6 @@
 module Scheduler
   class SchedulerTask
+    attr_accessor :daemon_scheduler, :rufus_scheduler
     class <<self
       def add_to(schedule)
         %w(every in at cron).each{|time|
@@ -12,7 +13,10 @@ module Scheduler
 
             schedule.send(time, *args) do
               begin
-                new.run
+                a_task = new
+                a_task.daemon_scheduler = schedule.daemon_scheduler
+                a_task.rufus_scheduler = schedule
+                a_task.run
               ensure
                 # Note: AR's ActiveRecord::Base.connection_pool.with_connection(&block) seems broken;
                 # it doesn't release the connection properly.
@@ -64,6 +68,12 @@ module Scheduler
     def run
       nil
     end
+    
+    def log(*args)
+      daemon_scheduler.log(*args)
+    end
+    alias :puts :log
   end
 end
-SchedulerTask = Scheduler::SchedulerTask # alias this for backwards compatability
+# alias this for backwards compatability
+SchedulerTask = Scheduler::SchedulerTask unless defined?(::SchedulerTask)

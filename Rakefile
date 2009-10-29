@@ -24,6 +24,12 @@ begin
     gem.add_dependency('daemons', '>= 1.0.10')
     gem.add_dependency('rufus-scheduler', '>= 2.0.1')
     gem.add_dependency('chronic', '>= 0.2.0')
+
+    gem.default_executable('bin/scheduler_daemon')
+    
+    everything_from_dirs = %w(bin generators lib spec)
+    gem.files = everything_from_dirs.map{|d| Dir["#{d}/**/*"] }.flatten
+    gem.files += Dir['*'] - (everything_from_dirs + ['pkg'])
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 
