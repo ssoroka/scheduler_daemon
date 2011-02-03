@@ -1,1 +1,0 @@
-puts "Files in lib/scheduled_tasks will be left alone."

@@ -1,0 +1,28 @@
+PATH
+  remote: .
+  specs:
+    scheduler_daemon (1.0.0)
+      chronic (>= 0.2.0)
+      daemons (>= 1.0.10)
+      eventmachine (>= 0.12.8)
+      rufus-scheduler (>= 2.0.1)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    chronic (0.3.0)
+    daemons (1.1.0)
+    eventmachine (0.12.10)
+    rufus-scheduler (2.0.8)
+      tzinfo (>= 0.3.23)
+    tzinfo (0.3.24)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  chronic (>= 0.2.0)
+  daemons (>= 1.0.10)
+  eventmachine (>= 0.12.8)
+  rufus-scheduler (>= 2.0.1)
+  scheduler_daemon!

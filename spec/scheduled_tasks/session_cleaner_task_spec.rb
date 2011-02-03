@@ -2,7 +2,7 @@
 # suggested file name for this file: spec/scheduler_daemon/scheduled_tasks/session_cleaner_task_spec.rb
 
 require File.join(File.dirname(__FILE__), %w(.. spec_helper))
-require 'scheduler/scheduler_task'
+require 'scheduler_daemon/scheduler_task'
 require File.join(File.dirname(__FILE__), %w(.. .. generators scheduler templates lib scheduled_tasks session_cleaner_task))
 
 describe SessionCleanerTask do

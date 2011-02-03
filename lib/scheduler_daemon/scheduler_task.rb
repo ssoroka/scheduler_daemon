@@ -76,4 +76,4 @@ module Scheduler
   end
 end
 # alias this for backwards compatability
-SchedulerTask = Scheduler::SchedulerTask unless defined?(::SchedulerTask)
+# SchedulerTask = Scheduler::SchedulerTask unless defined?(::SchedulerTask)

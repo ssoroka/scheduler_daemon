@@ -1,7 +1,7 @@
 require 'eventmachine'
 require 'rufus/scheduler'
-require File.join(File.dirname(__FILE__), 'scheduler', 'scheduler_task')
-require File.join(File.dirname(__FILE__), 'scheduler', 'exception_handler')
+require 'scheduler_daemon/scheduler_task'
+require 'scheduler_daemon/exception_handler'
 
 module Scheduler
   class Base

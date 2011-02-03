@@ -18,7 +18,6 @@
 # see README for more info
 require 'rubygems'
 require 'daemons'
-require File.expand_path(File.join(File.dirname(__FILE__), %w(.. lib loader find_rails_root)))
 
 def launch_args(options = {})
   params = options.map{|k,v| "--#{k}=#{v}"}
@@ -32,6 +31,7 @@ def launch_args(options = {})
 end
 
 rails_root = FindRailsRoot.locate
+root = args(:dir) || Dir.pwd
 pid_dir    = File.expand_path(File.join(rails_root, 'log'))
 scheduler  = File.join(File.dirname(__FILE__), %w(.. lib loader scheduler_loader.rb))
 

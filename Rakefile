@@ -5,7 +5,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "scheduler_daemon"
-    gem.summary = %Q{Rails 2.3.2 compatible scheduler daemon.  Replaces cron/rake pattern of periodically running rake tasks 
+    gem.summary = %Q{Rails 3 compatible scheduler daemon.  Replaces cron/rake pattern of periodically running rake tasks 
     to perform maintenance tasks in Rails apps. Scheduler Daemon is made specifically for your Rails app, 
     and only loads the environment once, no matter how many tasks run.
 
@@ -27,7 +27,7 @@ begin
 
     gem.default_executable('bin/scheduler_daemon')
     
-    everything_from_dirs = %w(bin generators lib spec)
+    everything_from_dirs = %w(bin lib spec)
     gem.files = everything_from_dirs.map{|d| Dir["#{d}/**/*"] }.flatten
     gem.files += Dir['*'] - (everything_from_dirs + ['pkg'])
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings

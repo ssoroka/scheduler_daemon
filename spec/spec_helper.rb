@@ -1,5 +1,9 @@
 require 'rubygems'
-require 'spec'
+begin
+  require 'rspec'
+rescue
+  require 'spec'
+end
 require 'chronic'
 
 RAILS_ENV = 'test'
