@@ -1,15 +1,12 @@
 #!/usr/bin/env ruby
 # This file loads the rails environment and starts the scheduler.
 # do not use it directly unless you don't intend for the scheduler to run as a daemon.
-require File.join(File.dirname(__FILE__), 'find_rails_root')
-
-rails_root = FindRailsRoot.locate
+require 'scheduler_daemon/command_line_args_to_hash'
+args = CommandLineArgsToHash.parse(ARGV)
 daemons_lib_dir = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
-# puts %(Changing to directory "#{rails_root}" and loading environment...)
-Dir.chdir(rails_root)
+Dir.chdir(args[:dir])
 
-require 'config/environment'
-require File.join(daemons_lib_dir, 'scheduler')
+require File.join(daemons_lib_dir, 'scheduler_daemon', 'base')
 
-Scheduler::Base.new(rails_root, ARGV)
+Scheduler::Base.new(args)

@@ -18,7 +18,9 @@
 # see README for more info
 require 'rubygems'
 require 'daemons'
+require 'scheduler_daemon/command_line_args_to_hash'
 
+# arguments to pass to the daemon launcher
 def launch_args(options = {})
   params = options.map{|k,v| "--#{k}=#{v}"}
   if params.empty?
@@ -30,18 +32,24 @@ def launch_args(options = {})
   end
 end
 
-rails_root = FindRailsRoot.locate
-root = args(:dir) || Dir.pwd
-pid_dir    = File.expand_path(File.join(rails_root, 'log'))
-scheduler  = File.join(File.dirname(__FILE__), %w(.. lib loader scheduler_loader.rb))
+# app arguments
+app_args = {}
+# only take args after the '--' arg.
+if separator_index = ARGV.index('--')
+  app_args = CommandLineArgsToHash.parse(ARGV[separator_index+1..-1])
+end
 
-raise "#{pid_dir} does not exist" unless File.exist?(pid_dir)
+app_args[:dir] ||= Dir.pwd
+app_args[:pid_dir] ||= File.expand_path(File.join(app_args[:dir], 'log'))
+scheduler = File.join(File.dirname(__FILE__), %w(.. lib loader scheduler_loader.rb))
+
+raise "#{pid_dir} does not exist" unless File.exist?(app_args[:pid_dir])
 
 app_options = {
   :app_name => 'scheduler_daemon',
-  :ARGV => launch_args(:dir => rails_root),
+  :ARGV => launch_args(app_args),
   :dir_mode => :normal,
-  :dir => pid_dir,
+  :dir => app_args[:pid_dir],
   :multiple => false,
   :backtrace => true,
   :log_output => true,

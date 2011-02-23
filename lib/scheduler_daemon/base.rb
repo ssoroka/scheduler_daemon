@@ -1,26 +1,71 @@
 require 'eventmachine'
 require 'rufus/scheduler'
+begin
+  require 'active_support/hash_with_indifferent_access'
+rescue LoadError
+  begin
+    require 'active_support/core_ext/hash'
+  rescue LoadError
+    puts "can't load activesupport gem not loaded"
+    raise $!
+  end
+end
+
 require 'scheduler_daemon/scheduler_task'
 require 'scheduler_daemon/exception_handler'
+require 'scheduler_daemon/command_line_args_to_hash'
 
 module Scheduler
   class Base
-    attr_reader :load_only, :load_except, :tasks
+    attr_reader :tasks, :options, :env_name
 
-    def initialize(rails_root, *command_line_args)
-      @rails_root = rails_root
-      @load_only = []
-      @load_except = []
-      @tasks = []
+    # :root_dir is a required option, because the scheduler likely has no idea what the original
+    #     root directory was after the process was daemonized (which changes the current directory)
+    # :silent
+    #     doesn't output anything to STDOUT or logs.
+    # :root_dir
+    #     root dir of the application.
+    # :only
+    #     load only tasks in this list
+    # :except
+    #     load all tasks except ones in this list
+    # :env_name
+    #     if used without rails, you can manually set something in place of the environment name
+    def initialize(opts = {}, command_line_args = [])
+      @options = ::HashWithIndifferentAccess.new(opts)
+      @options.merge!(CommandLineArgsToHash.parse(command_line_args, :array_args => ['only', 'except']))
+      @options['only'] ||= []
+      @options['except'] ||= []
+      @env_name = @options['env_name'] || 'scheduler'
       @rufus_scheduler = nil
+      @tasks = []
       
-      unless command_line_args.flatten.first == '--do-nothing'
-        decide_what_to_run(command_line_args.flatten)
+      log("initialized with settings: #{@options.inspect}")
+
+      if !@options['skip_init']
+        load_rails_env
         load_tasks
         run_scheduler
       end
     end
     
+    # registers a task class with the scheduler
+    def register_task(task)
+      
+    end
+    
+    def load_rails_env
+      if File.exists?('config/environment.rb') && !@options['skip_rails']
+        log("loading rails environment")
+        require 'config/environment'
+        @env_name = Rails.env
+      end
+    rescue
+      log("Error loading rails environment; #{$!.class.name}: #{$!.message}")
+      raise $!
+    end
+    
+    # time redefines itself with a faster implementation, since it gets called a lot.
     def time
       if Time.respond_to?(:zone) && Time.zone
         self.class.send(:define_method, :time) { Time.zone.now.to_s }
@@ -31,12 +76,17 @@ module Scheduler
     end
     
     def log(*args)
+      return if @options[:silent]
       Kernel::puts(%([#{time}] #{args.join("\n")}))
     end
     alias :puts :log
 
     def run_scheduler
-      puts "Starting Scheduler in #{RAILS_ENV}"
+      if defined?(Rails)
+        log "Starting Scheduler in #{Rails.env}"
+      else
+        log "Starting Scheduler"
+      end
 
       $daemon_scheduler = self
 
@@ -44,9 +94,9 @@ module Scheduler
         @rufus_scheduler = Rufus::Scheduler::EmScheduler.start_new
 
         def @rufus_scheduler.handle_exception(job, exception)
-          msg = "[#{RAILS_ENV}] scheduler job #{job.job_id} (#{job.tags * ' '}) caught exception #{exception.inspect}"
-          puts msg
-          puts exception.backtrace.join("\n")
+          msg = "[#{env_name}] scheduler job #{job.job_id} (#{job.tags * ' '}) caught exception #{exception.inspect}"
+          log msg
+          log exception.backtrace.join("\n")
           Scheduler::ExceptionHandler.handle_exception(exception, job, message)
         end
 
@@ -56,10 +106,10 @@ module Scheduler
 
         # This is where the magic happens.  tasks in scheduled_tasks/*.rb are loaded up.
         tasks.each do |task|
-          if task.should_run_in_current_environment?
+          if task.should_run_in_current_environment?(env_name)
             task.add_to(@rufus_scheduler)
           else
-            puts "#{task} configured not to run in #{RAILS_ENV} environment; skipping."
+            log "[#{env_name}] #{task} not configured to run; skipping."
           end
         end
       }
@@ -68,45 +118,33 @@ module Scheduler
     def load_tasks
       tasks_to_run.each{|f|
         begin
-          unless load_only.any? && load_only.all?{|m| f !~ Regexp.new(Regexp.escape(m)) }
+          unless options[:only].any? && options[:only].all?{|m| f !~ Regexp.new(Regexp.escape(m)) }
             require f
             filename = f.split('/').last.split('.').first
-            puts "Loading task #{filename}..."
-            tasks << filename.camelcase.constantize # path/newsfeed_task.rb => NewsfeedTask
+            log "Loading task #{filename}..."
+            @tasks << filename.camelcase.constantize # "path/newsfeed_task.rb" => NewsfeedTask
           end
         rescue Exception => e
           msg = "Error loading task #{filename}: #{e.class.name}: #{e.message}"
-          puts msg
-          puts e.backtrace.join("\n")
-          Railsbot.say "#{msg}, see log for backtrace" if Rails.env.production? || Rails.env.staging?
+          log msg
+          log e.backtrace.join("\n")
+          # Railsbot.say "#{msg}, see log for backtrace" if Rails.env.production? || Rails.env.staging?
+          # need some kind of load error handler.
         end
       }
     end
 
     def tasks_to_run
-      task_files = Dir[File.join(%w(lib scheduled_tasks *.rb))]
+      task_files = Dir[File.join(%w(scheduled_tasks *.rb))]# + File.join(%w(lib scheduled_tasks *.rb))
 
-      if load_only.any?
-        task_files.reject!{|f| load_only.all?{|m| f !~ Regexp.new(Regexp.escape(m))}}
+      if options[:only].any?
+        task_files.reject!{|f| options[:only].all?{|m| f !~ Regexp.new(Regexp.escape(m))}}
       end
 
-      if load_except.any?
-        task_files.reject!{|f| load_except.any?{|m| f =~ Regexp.new(Regexp.escape(m))}}
+      if options[:except].any?
+        task_files.reject!{|f| options[:except].any?{|m| f =~ Regexp.new(Regexp.escape(m))}}
       end
       task_files
-    end
-
-    # takes input from command line to later modify list of tasks to run
-    def decide_what_to_run(command_line_args)
-      # allow ruby daemons/bin/task_runner.rb run -- --only=toadcamp,newsfeed
-      if only_arg = command_line_args.detect{|arg| arg =~ /^--only/}
-        @load_only = only_arg.split('=').last.split(',')
-      end
-
-      # allow ruby daemons/bin/task_runner.rb run -- --except=toadcamp
-      if except_arg = command_line_args.detect{|arg| arg =~ /^--except/}
-        @load_except = except_arg.split('=').last.split(',')
-      end
     end
   end
 end

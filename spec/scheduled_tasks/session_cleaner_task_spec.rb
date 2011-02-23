@@ -1,9 +1,10 @@
 # copy this spec to your project after installing the plugin if you want to run the specs.
 # suggested file name for this file: spec/scheduler_daemon/scheduled_tasks/session_cleaner_task_spec.rb
 
-require File.join(File.dirname(__FILE__), %w(.. spec_helper))
+# require File.join(File.dirname(__FILE__), %w(.. spec_helper))
+require 'spec_helper'
 require 'scheduler_daemon/scheduler_task'
-require File.join(File.dirname(__FILE__), %w(.. .. generators scheduler templates lib scheduled_tasks session_cleaner_task))
+require 'scheduler_daemon/rails/generators/scheduler/templates/lib/scheduled_tasks/session_cleaner_task'
 
 describe SessionCleanerTask do
   before(:each) do
@@ -13,7 +14,8 @@ describe SessionCleanerTask do
 
   it "should remove old sessions" do
     # this test only matters if we're using AR's session store.
-    if ActionController::Base.session_store == ActiveRecord::SessionStore
+    if defined?(ActionController) && defined?(ActiveRecord) && 
+        ActionController::Base.session_store == ActiveRecord::SessionStore
 
       # insert old session
       ActiveRecord::Base.connection.execute(%(delete from #{@task.session_table_name} where session_id = 'abc123'))
@@ -26,6 +28,8 @@ describe SessionCleanerTask do
       lambda {
         @task.run
       }.should change(get_session_count, :call).by_at_most(-1)
+    else
+      pending 'skipping SessionCleanerTask test since it depends on rails and ActiveRecord::SessionStore; try copying this spec to your rails application.'
     end
   end
 end

@@ -3,15 +3,14 @@ module Scheduler
     attr_accessor :daemon_scheduler, :rufus_scheduler
     class <<self
       def add_to(schedule)
-        %w(every in at cron).each{|time|
-          if args = self.instance_variable_get("@#{time}")
+        %w(every in at cron).each{|time_cmd|
+          if args = self.instance_variable_get("@#{time_cmd}")
             # add a default tag to the arguments so we know which task was running
             options = args.extract_options!
             options.merge!(:tags => [name])
-            # args = ['5s'] if Rails.env.development? # just for testing. :)
             args << options
 
-            schedule.send(time, *args) do
+            schedule.send(time_cmd, *args) do
               begin
                 a_task = new
                 a_task.daemon_scheduler = schedule.daemon_scheduler
@@ -59,8 +58,8 @@ module Scheduler
         @environments = args.map{|arg| arg.to_sym }
       end
 
-      def should_run_in_current_environment?
-        @environments.nil? || @environments == [:all] || @environments.include?(RAILS_ENV.to_sym)
+      def should_run_in_current_environment?(env)
+        @environments.nil? || @environments == [:all] || @environments.include?(env.to_sym)
       end
     end
 

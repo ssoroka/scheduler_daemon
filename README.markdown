@@ -76,6 +76,22 @@ Selectively run tasks like so:
 
     scheduler_daemon start -- --only=task_name1,task_name2 --except=not_me
 
+Manually create tasks
+=====================
+
+If you don't want to use this gem with Rails, you can manually create tasks in a scheduled_tasks/ subdirectory and start the daemon with --skip-rails (though it'll figure it out anyway if there's no config/environment.rb file in the launch directory or --dir=/path)
+
+Here's an example task file.
+
+    class CleanUpTask < Scheduler::SchedulerTask
+      every '2m'
+  
+      def run
+        do_something
+        log("I've done things")
+      end
+    end
+
 Specs
 =====
 
