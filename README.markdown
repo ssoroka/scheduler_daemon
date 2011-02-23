@@ -22,12 +22,11 @@ Install as a gem or plugin.
 
 As a gem, the old-fashioned way:
 
-    gem install scheduler_daemon -s http://gemcutter.org
+    gem install scheduler_daemon
 
 As a gem with bundler, add to your ./Gemfile:
 
-    source "http://gemcutter.org"
-    gem 'scheduler_daemon', :only => :bundle
+    gem 'scheduler_daemon'
 
 As a plugin: (might be awkward to call the binary to start up the daemon...)
 
@@ -37,11 +36,11 @@ As a plugin: (might be awkward to call the binary to start up the daemon...)
 
 Optionally generate the default scheduler daemon task for your rails app:
 
-    script/generate scheduler
+    script/rails generate scheduler_task MyNewTask
 
-which will create an excellent example task named:
+which will create an task named:
 
-    lib/scheduled_tasks/session_cleaner_task.rb
+    scheduled_tasks/my_new_task.rb
 
 Usage
 =====
@@ -66,6 +65,8 @@ Tasks support their own special DSL; commands are:
 fire up the daemon in console mode to test it out
 
     scheduler_daemon run
+    or
+    bundle exec scheduler_daemon run
 
 For production environments, add the daemon to the system start-up, and
 capistrano deploy scripts, etc.  Something like:
