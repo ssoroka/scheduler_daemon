@@ -58,7 +58,7 @@ module Scheduler
       if File.exists?('config/environment.rb') && !@options['skip_rails']
         log("loading rails environment")
         require 'config/environment'
-        @env_name = Rails.env
+        @env_name = ::Rails.env
       end
     rescue
       log("Error loading rails environment; #{$!.class.name}: #{$!.message}")
@@ -82,8 +82,8 @@ module Scheduler
     alias :puts :log
 
     def run_scheduler
-      if defined?(Rails)
-        log "Starting Scheduler in #{Rails.env}"
+      if defined?(::Rails)
+        log "Starting Scheduler in #{::Rails.env}"
       else
         log "Starting Scheduler"
       end
@@ -128,8 +128,7 @@ module Scheduler
           msg = "Error loading task #{filename}: #{e.class.name}: #{e.message}"
           log msg
           log e.backtrace.join("\n")
-          # Railsbot.say "#{msg}, see log for backtrace" if Rails.env.production? || Rails.env.staging?
-          # need some kind of load error handler.
+          Scheduler::ExceptionHandler.handle_exception(e, nil, msg)
         end
       }
     end
