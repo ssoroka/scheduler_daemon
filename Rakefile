@@ -17,6 +17,8 @@ begin
     - It doesn't use rake or cron!
     - Gets you up and running with your own daemon in under 2 minutes
     }
+    gem.version = File.read('VERSION').chomp
+    gem.description = 'a Rails 2.3, Rails 3, and Ruby compatible scheduler daemon.  Replaces cron/rake pattern of periodically running rake tasks to perform maintenance tasks, only loading the environment ONCE.'
     gem.email = "ssoroka78@gmail.com"
     gem.homepage = "http://github.com/ssoroka/scheduler_daemon"
     gem.authors = ["Steven Soroka"]
@@ -25,7 +27,7 @@ begin
     gem.add_dependency('rufus-scheduler', '>= 2.0.1')
     gem.add_dependency('chronic', '>= 0.2.0')
 
-    gem.default_executable('bin/scheduler_daemon')
+    gem.executables = ['scheduler_daemon']
     
     everything_from_dirs = %w(bin lib spec)
     gem.files = everything_from_dirs.map{|d| Dir["#{d}/**/*"] }.flatten

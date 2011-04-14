@@ -1,7 +1,9 @@
 Scheduler Daemon
 ================
 
-Rails 2.3+ compatible scheduler daemon.  Replaces cron/rake pattern of periodically running rake tasks 
+Rails 3+ compatible scheduler daemon (see branches for older versions).
+
+Replaces cron/rake pattern of periodically running rake tasks 
 to perform maintenance tasks in Rails apps. Scheduler Daemon is made specifically for your Rails app, 
 and only loads the environment once, no matter how many tasks run.
 

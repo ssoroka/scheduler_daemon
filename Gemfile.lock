@@ -5,14 +5,10 @@ PATH
       activesupport
       chronic (>= 0.2.0)
       chronic (>= 0.2.0)
-      chronic (>= 0.2.0)
-      daemons (>= 1.0.10)
       daemons (>= 1.0.10)
       daemons (>= 1.0.10)
       eventmachine (>= 0.12.8)
       eventmachine (>= 0.12.8)
-      eventmachine (>= 0.12.8)
-      rufus-scheduler (>= 2.0.1)
       rufus-scheduler (>= 2.0.1)
       rufus-scheduler (>= 2.0.1)
       scheduler_daemon
@@ -20,13 +16,13 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (3.0.4)
+    activesupport (3.0.6)
     chronic (0.3.0)
-    daemons (1.1.0)
+    daemons (1.1.2)
     eventmachine (0.12.10)
     rufus-scheduler (2.0.8)
       tzinfo (>= 0.3.23)
-    tzinfo (0.3.24)
+    tzinfo (0.3.26)
 
 PLATFORMS
   ruby

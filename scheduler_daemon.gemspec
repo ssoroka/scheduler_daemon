@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steven Soroka"]
-  s.date = %q{2011-02-23}
-  s.default_executable = %q{scheduler_daemon}
+  s.date = %q{2011-04-14}
+  s.description = %q{a Rails 2.3, Rails 3, and Ruby compatible scheduler daemon.  Replaces cron/rake pattern of periodically running rake tasks to perform maintenance tasks, only loading the environment ONCE.}
   s.email = %q{ssoroka78@gmail.com}
   s.executables = ["scheduler_daemon"]
   s.extra_rdoc_files = [
@@ -46,7 +46,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://github.com/ssoroka/scheduler_daemon}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.7.2}
   s.summary = %q{Rails 3 compatible scheduler daemon.  Replaces cron/rake pattern of periodically running rake tasks  to perform maintenance tasks in Rails apps. Scheduler Daemon is made specifically for your Rails app,  and only loads the environment once, no matter how many tasks run.  What's so great about it?  Well, I'm glad you asked!  - Only loads your Rails environment once on daemon start, not every time a task is run - Allows you to easily deploy the scheduled tasks with your Rails app instead of depending on an administrator to update crontab - It doesn't use rake or cron! - Gets you up and running with your own daemon in under 2 minutes}
   s.test_files = [
     "spec/command_line_args_to_hash_spec.rb",
@@ -56,7 +56,6 @@ Gem::Specification.new do |s|
   ]
 
   if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
