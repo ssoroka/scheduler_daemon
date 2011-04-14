@@ -29,6 +29,8 @@ As a gem, the old-fashioned way:
 As a gem with bundler, add to your ./Gemfile:
 
     gem 'scheduler_daemon'
+    
+I pretty much assume you chose this option below and prefix most commands with "bundle exec"
 
 As a plugin: (might be awkward to call the binary to start up the daemon...)
 
@@ -49,8 +51,13 @@ Usage
 
 generate a new scheduled task:
 
-    script/generate scheduler_task MyTaskName
+    script/rails generate scheduler_task MyTaskName
 
+If you have problems with that, the template for new tasks is in the gem under:
+  
+    lib/scheduler_daemon/rails/generators/scheduler_task/templates/scheduled_tasks/example_task.rb
+    
+you can always copy it and make modifications, or see "Manually create tasks" below.
 
 Tasks support their own special DSL; commands are:
 
@@ -66,18 +73,17 @@ Tasks support their own special DSL; commands are:
 
 fire up the daemon in console mode to test it out
 
-    scheduler_daemon run
-    or
     bundle exec scheduler_daemon run
 
 For production environments, add the daemon to the system start-up, and
 capistrano deploy scripts, etc.  Something like:
 
-    RAILS_ENV=production scheduler_daemon start
+    export RAILS_ENV=production
+    bundle exec scheduler_daemon start
 
 Selectively run tasks like so:
 
-    scheduler_daemon start -- --only=task_name1,task_name2 --except=not_me
+    bundle exec scheduler_daemon start -- --only=task_name1,task_name2 --except=not_me
 
 Manually create tasks
 =====================
@@ -112,8 +118,6 @@ Bugs
 
 Submit bugs here http://github.com/ssoroka/scheduler_daemon/issues
 
-I'd especially like to hear about success/failures with Rails versions outside of 2.2.x to 2.3.x
-
 Caveats
 =======
 
@@ -140,7 +144,3 @@ Steven Soroka
 * [My Github repo](http://github.com/ssoroka)
 * [My blog](http://blog.stevensoroka.ca)
 
-Thanks
-======
-
-Special thanks to [Goldstar](http://www.goldstar.com) for promoting open-source in the workplace.
