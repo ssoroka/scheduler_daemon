@@ -57,7 +57,7 @@ module Scheduler
     def load_rails_env
       if File.exists?('config/environment.rb') && !@options['skip_rails']
         log("loading rails environment")
-        require './config/environment'
+        require File.expand_path('./config/environment')
         @env_name = ::Rails.env
       end
     rescue
@@ -119,7 +119,7 @@ module Scheduler
       tasks_to_run.each{|f|
         begin
           unless options[:only].any? && options[:only].all?{|m| f !~ Regexp.new(Regexp.escape(m)) }
-            require "./#{f}"
+            require File.expand_path("./#{f}")
             filename = f.split('/').last.split('.').first
             log "Loading task #{filename}..."
             @tasks << filename.camelcase.constantize # "path/newsfeed_task.rb" => NewsfeedTask
