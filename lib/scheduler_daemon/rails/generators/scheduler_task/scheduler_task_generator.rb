@@ -6,6 +6,10 @@ class SchedulerTaskGenerator < Rails::Generators::NamedBase
     readme(File.join(template_dir, 'README'))
   end
   
+  def self.source_root
+    File.dirname(File.expand_path(__FILE__))
+  end
+  
   private
     def source_dir
       File.join(template_dir, 'scheduled_tasks')
