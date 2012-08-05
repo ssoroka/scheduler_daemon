@@ -44,7 +44,8 @@ app_args[:pid_dir] ||= File.expand_path(File.join(app_args[:dir], 'log'))
 app_args[:log_dir] ||= File.expand_path(File.join(app_args[:dir], 'log'))
 scheduler = File.join(File.dirname(__FILE__), %w(.. lib loader scheduler_loader.rb))
 
-raise "#{pid_dir} does not exist" unless File.exist?(app_args[:pid_dir])
+raise "#{app_args[:pid_dir]} does not exist" unless File.exist?(app_args[:pid_dir])
+raise "#{app_args[:log_dir]} does not exist" unless File.exist?(app_args[:log_dir])
 
 app_options = {
   :app_name => 'scheduler_daemon',
