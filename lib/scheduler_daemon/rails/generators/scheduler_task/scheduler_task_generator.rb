@@ -2,6 +2,7 @@ class SchedulerTaskGenerator < Rails::Generators::NamedBase
   check_class_collision :suffix => 'Task'
   
   def create_task
+    SchedulerTaskGenerator.source_root
     template File.join(source_dir, 'example_task.rb'), "scheduled_tasks/#{file_name}_task.rb"
     readme(File.join(template_dir, 'README'))
   end
