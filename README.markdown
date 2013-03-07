@@ -32,15 +32,15 @@ As a gem with bundler, add to your ./Gemfile:
     
 I pretty much assume you chose this option below and prefix most commands with "bundle exec"
 
-As a plugin: (might be awkward to call the binary to start up the daemon...)
+As a plugin (deprecated): (might be awkward to call the binary to start up the daemon...)
 
-    script/plugin install git://github.com/ssoroka/scheduler_daemon.git
+    rails plugin install git://github.com/ssoroka/scheduler_daemon.git
     # Install required gems
     gem install daemons rufus-scheduler eventmachine chronic -s http://gemcutter.org
 
 Optionally generate the default scheduler daemon task for your rails app:
 
-    script/rails generate scheduler_task MyNewTask
+    rails generate scheduler_task MyNewTask
 
 which will create an task named:
 
@@ -51,7 +51,7 @@ Usage
 
 generate a new scheduled task:
 
-    script/rails generate scheduler_task MyTaskName
+    rails generate scheduler_task MyTaskName
 
 If you have problems with that, the template for new tasks is in the gem under:
   
@@ -69,7 +69,8 @@ Tasks support their own special DSL; commands are:
                                                    #   (happens every time scheduler starts/restarts)
                                                    #   (see caveat below                            )
     cron '* 4 * * *'                               # cron style (run every 4 am)
-    in '30s'                                       # run once, 30 seconds from scheduler start/restart
+    self.in '30s'                                  # run once, 30 seconds from scheduler start/restart
+                                                   # "self." is required--"in" is a keyword
 
 fire up the daemon in console mode to test it out
 
@@ -142,5 +143,4 @@ Steven Soroka
 
 * [@ssoroka](http://twitter.com/ssoroka)
 * [My Github repo](http://github.com/ssoroka)
-* [My blog](http://blog.stevensoroka.ca)
 
