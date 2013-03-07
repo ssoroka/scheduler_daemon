@@ -92,12 +92,13 @@ module Scheduler
 
       EventMachine::run {
         @rufus_scheduler = Rufus::Scheduler::EmScheduler.start_new
+        @rufus_scheduler.singleton_class.send :define_method, :log, self.method(:log).to_proc
 
         def @rufus_scheduler.handle_exception(job, exception)
-          msg = "[#{env_name}] scheduler job #{job.job_id} (#{job.tags * ' '}) caught exception #{exception.inspect}"
-          log msg
-          log exception.backtrace.join("\n")
-          Scheduler::ExceptionHandler.handle_exception(exception, job, message)
+          msg = "[#{@env_name}] scheduler job #{job.job_id} (#{job.tags * ' '}) caught exception #{exception.inspect}"
+          self.log msg
+          self.log exception.backtrace.join("\n")
+          Scheduler::ExceptionHandler.handle_exception(exception, job, msg)
         end
 
         def @rufus_scheduler.daemon_scheduler
@@ -106,10 +107,10 @@ module Scheduler
 
         # This is where the magic happens.  tasks in scheduled_tasks/*.rb are loaded up.
         tasks.each do |task|
-          if task.should_run_in_current_environment?(env_name)
+          if task.should_run_in_current_environment?(@env_name)
             task.add_to(@rufus_scheduler)
           else
-            log "[#{env_name}] #{task} not configured to run; skipping."
+            self.log "[#{@env_name}] #{task} not configured to run; skipping."
           end
         end
       }
