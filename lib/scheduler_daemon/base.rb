@@ -96,8 +96,8 @@ module Scheduler
 
         def @rufus_scheduler.handle_exception(job, exception)
           msg = "[#{@env_name}] scheduler job #{job.job_id} (#{job.tags * ' '}) caught exception #{exception.inspect}"
-          self.log msg
-          self.log exception.backtrace.join("\n")
+          log msg
+          log exception.backtrace.join("\n")
           Scheduler::ExceptionHandler.handle_exception(exception, job, msg)
         end
 
@@ -110,7 +110,7 @@ module Scheduler
           if task.should_run_in_current_environment?(@env_name)
             task.add_to(@rufus_scheduler)
           else
-            self.log "[#{@env_name}] #{task} not configured to run; skipping."
+            log "[#{@env_name}] #{task} not configured to run; skipping."
           end
         end
       }
