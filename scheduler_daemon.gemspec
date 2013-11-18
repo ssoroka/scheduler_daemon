@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "scheduler_daemon"
-  s.version = "1.1.3"
+  s.version = "1.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steven Soroka"]
-  s.date = "2013-03-07"
+  s.date = "2013-11-18"
   s.description = "a Rails 2.3, Rails 3, and Ruby compatible scheduler daemon.  Replaces cron/rake pattern of periodically running rake tasks to perform maintenance tasks, only loading the environment ONCE."
   s.email = "ssoroka78@gmail.com"
   s.executables = ["scheduler_daemon"]
@@ -56,36 +56,45 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<scheduler_daemon>, [">= 0"])
       s.add_runtime_dependency(%q<eventmachine>, [">= 0.12.8"])
       s.add_runtime_dependency(%q<daemons>, [">= 1.0.10"])
-      s.add_runtime_dependency(%q<rufus-scheduler>, [">= 2.0.1"])
+      s.add_runtime_dependency(%q<rufus-scheduler>, ["~> 2.0.24"])
       s.add_runtime_dependency(%q<chronic>, [">= 0.2.0"])
       s.add_runtime_dependency(%q<activesupport>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.13.0"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.13.0"])
       s.add_runtime_dependency(%q<eventmachine>, [">= 0.12.8"])
       s.add_runtime_dependency(%q<daemons>, [">= 1.0.10"])
-      s.add_runtime_dependency(%q<rufus-scheduler>, [">= 2.0.1"])
-      s.add_runtime_dependency(%q<chronic>, [">= 0.2.0"])
+      s.add_runtime_dependency(%q<rufus-scheduler>, ["~> 2.0.24"])
+      s.add_runtime_dependency(%q<chronic>, ["~> 0.10.0"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.13.0"])
     else
       s.add_dependency(%q<scheduler_daemon>, [">= 0"])
       s.add_dependency(%q<eventmachine>, [">= 0.12.8"])
       s.add_dependency(%q<daemons>, [">= 1.0.10"])
-      s.add_dependency(%q<rufus-scheduler>, [">= 2.0.1"])
+      s.add_dependency(%q<rufus-scheduler>, ["~> 2.0.24"])
       s.add_dependency(%q<chronic>, [">= 0.2.0"])
       s.add_dependency(%q<activesupport>, [">= 0"])
+      s.add_dependency(%q<rspec>, ["~> 2.13.0"])
+      s.add_dependency(%q<rspec>, ["~> 2.13.0"])
       s.add_dependency(%q<eventmachine>, [">= 0.12.8"])
       s.add_dependency(%q<daemons>, [">= 1.0.10"])
-      s.add_dependency(%q<rufus-scheduler>, [">= 2.0.1"])
-      s.add_dependency(%q<chronic>, [">= 0.2.0"])
+      s.add_dependency(%q<rufus-scheduler>, ["~> 2.0.24"])
+      s.add_dependency(%q<chronic>, ["~> 0.10.0"])
+      s.add_dependency(%q<rspec>, ["~> 2.13.0"])
     end
   else
     s.add_dependency(%q<scheduler_daemon>, [">= 0"])
     s.add_dependency(%q<eventmachine>, [">= 0.12.8"])
     s.add_dependency(%q<daemons>, [">= 1.0.10"])
-    s.add_dependency(%q<rufus-scheduler>, [">= 2.0.1"])
+    s.add_dependency(%q<rufus-scheduler>, ["~> 2.0.24"])
     s.add_dependency(%q<chronic>, [">= 0.2.0"])
     s.add_dependency(%q<activesupport>, [">= 0"])
+    s.add_dependency(%q<rspec>, ["~> 2.13.0"])
+    s.add_dependency(%q<rspec>, ["~> 2.13.0"])
     s.add_dependency(%q<eventmachine>, [">= 0.12.8"])
     s.add_dependency(%q<daemons>, [">= 1.0.10"])
-    s.add_dependency(%q<rufus-scheduler>, [">= 2.0.1"])
-    s.add_dependency(%q<chronic>, [">= 0.2.0"])
+    s.add_dependency(%q<rufus-scheduler>, ["~> 2.0.24"])
+    s.add_dependency(%q<chronic>, ["~> 0.10.0"])
+    s.add_dependency(%q<rspec>, ["~> 2.13.0"])
   end
 end
 

@@ -24,8 +24,9 @@ begin
     gem.authors = ["Steven Soroka"]
     gem.add_dependency('eventmachine', '>= 0.12.8')
     gem.add_dependency('daemons', '>= 1.0.10')
-    gem.add_dependency('rufus-scheduler', '>= 2.0.1')
-    gem.add_dependency('chronic', '>= 0.2.0')
+    gem.add_dependency('rufus-scheduler', '~> 2.0.24')
+    gem.add_dependency('chronic', '~> 0.10.0')
+    gem.add_development_dependency('rspec', '~> 2.13.0')
 
     gem.executables = ['scheduler_daemon']
     
