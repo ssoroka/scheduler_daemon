@@ -3,7 +3,7 @@ require 'scheduler_daemon/command_line_args_to_hash'
 
 describe CommandLineArgsToHash do
   it 'should process arguments' do
-    h = CommandLineArgsToHash.parse('--hello')
+    h = CommandLineArgsToHash.parse(['--hello'])
     h['hello'].should == true
   end
   
