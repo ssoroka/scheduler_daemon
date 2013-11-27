@@ -42,6 +42,7 @@ end
 app_args[:dir] ||= Dir.pwd
 app_args[:pid_dir] ||= File.expand_path(File.join(app_args[:dir], 'log'))
 app_args[:log_dir] ||= File.expand_path(File.join(app_args[:dir], 'log'))
+app_args[:multiple] ||= false
 scheduler = File.join(File.dirname(__FILE__), %w(.. lib loader scheduler_loader.rb))
 
 raise "#{app_args[:pid_dir]} does not exist" unless File.exist?(app_args[:pid_dir])
@@ -53,7 +54,7 @@ app_options = {
   :dir_mode => :normal,
   :dir => app_args[:pid_dir],
   :log_dir => app_args[:log_dir],
-  :multiple => false,
+  :multiple => app_args[:multiple],
   :backtrace => true,
   :log_output => true,
   :monitor => true
