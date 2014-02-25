@@ -19,7 +19,7 @@ module Scheduler
               ensure
                 # Note: AR's ActiveRecord::Base.connection_pool.with_connection(&block) seems broken;
                 # it doesn't release the connection properly.
-                ActiveRecord::Base.connection_pool.release_connection
+                ActiveRecord::Base.connection_pool.release_connection if defined?(ActiveRecord)
               end
             end
           end
@@ -67,7 +67,7 @@ module Scheduler
     def run
       nil
     end
-    
+
     def log(*args)
       daemon_scheduler.log(*args)
     end
