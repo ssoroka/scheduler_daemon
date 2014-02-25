@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "scheduler_daemon"
-  s.version = "1.1.4"
+  s.version = "1.1.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Steven Soroka"]
-  s.date = "2013-11-18"
+  s.date = "2014-02-25"
   s.description = "a Rails 2.3, Rails 3, and Ruby compatible scheduler daemon.  Replaces cron/rake pattern of periodically running rake tasks to perform maintenance tasks, only loading the environment ONCE."
   s.email = "ssoroka78@gmail.com"
   s.executables = ["scheduler_daemon"]
@@ -47,7 +47,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/ssoroka/scheduler_daemon"
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.23"
-  s.summary = "Rails 3 compatible scheduler daemon.  Replaces cron/rake pattern of periodically running rake tasks  to perform maintenance tasks in Rails apps. Scheduler Daemon is made specifically for your Rails app,  and only loads the environment once, no matter how many tasks run.  What's so great about it?  Well, I'm glad you asked!  - Only loads your Rails environment once on daemon start, not every time a task is run - Allows you to easily deploy the scheduled tasks with your Rails app instead of depending on an administrator to update crontab - It doesn't use rake or cron! - Gets you up and running with your own daemon in under 2 minutes"
+  s.summary = "Rails 3 compatible scheduler daemon.  Replaces cron/rake pattern of periodically running rake tasks to perform maintenance tasks in Rails apps. Scheduler Daemon is made specifically for your Rails app, and only loads the environment once, no matter how many tasks run.  What's so great about it?  Well, I'm glad you asked!  - Only loads your Rails environment once on daemon start, not every time a task is run - Allows you to easily deploy the scheduled tasks with your Rails app instead of depending on an administrator to update crontab - It doesn't use rake or cron! - Gets you up and running with your own daemon in under 2 minutes"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
