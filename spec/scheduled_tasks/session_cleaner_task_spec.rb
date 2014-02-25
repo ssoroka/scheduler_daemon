@@ -9,12 +9,12 @@ require 'scheduler_daemon/rails/generators/scheduler/templates/lib/scheduled_tas
 describe SessionCleanerTask do
   before(:each) do
     @task = SessionCleanerTask.new
-    @task.stub!(:log)
+    @task.stub(:log)
   end
 
   it "should remove old sessions" do
     # this test only matters if we're using AR's session store.
-    if defined?(ActionController) && defined?(ActiveRecord) && 
+    if defined?(ActionController) && defined?(ActiveRecord) &&
         ActionController::Base.session_store == ActiveRecord::SessionStore
 
       # insert old session

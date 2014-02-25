@@ -4,7 +4,7 @@ require 'scheduler_daemon/base'
 describe Scheduler::Base do
   before(:each) do
     @scheduler = Scheduler::Base.new(:skip_init => true, :silent => true)
-    @scheduler.stub!(:log)
+    @scheduler.stub(:log)
   end
 
   describe 'decide_what_to_run' do
