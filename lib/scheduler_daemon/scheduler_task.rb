@@ -69,7 +69,7 @@ module Scheduler
     end
 
     def log(*args)
-      daemon_scheduler.log(*args)
+      daemon_scheduler.log(*args) if daemon_scheduler
     end
     alias :puts :log
   end
