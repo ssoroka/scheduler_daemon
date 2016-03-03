@@ -1,0 +1,15 @@
+language: ruby
+cache: bundler
+rvm:
+  - 1.9.3
+  - jruby
+  - 2.0.0
+  - 2.1
+  - 2.2
+  - ruby-head
+gemfile:
+  - gemfiles/Gemfile.actionpack-3.2.x
+  - gemfiles/Gemfile.actionpack-4.0.x
+  - gemfiles/Gemfile.actionpack-4.1.x
+  - gemfiles/Gemfile.actionpack-4.2.x
+  - Gemfile
