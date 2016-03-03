@@ -1,10 +1,12 @@
 Scheduler Daemon
 ================
 
+[![Build Status](https://travis-ci.org/ssoroka/scheduler_daemon.svg?branch=master)](https://travis-ci.org/ssoroka/scheduler_daemon)
+
 Rails 3+ compatible scheduler daemon (see branches for older versions).
 
-Replaces cron/rake pattern of periodically running rake tasks 
-to perform maintenance tasks in Rails apps. Scheduler Daemon is made specifically for your Rails app, 
+Replaces cron/rake pattern of periodically running rake tasks
+to perform maintenance tasks in Rails apps. Scheduler Daemon is made specifically for your Rails app,
 and only loads the environment once, no matter how many tasks run.
 
 What's so great about it?  Well, I'm glad you asked!
@@ -29,7 +31,7 @@ As a gem, the old-fashioned way:
 As a gem with bundler, add to your ./Gemfile:
 
     gem 'scheduler_daemon'
-    
+
 I pretty much assume you chose this option below and prefix most commands with "bundle exec"
 
 As a plugin (deprecated): (might be awkward to call the binary to start up the daemon...)
@@ -54,9 +56,9 @@ generate a new scheduled task:
     rails generate scheduler_task MyTaskName
 
 If you have problems with that, the template for new tasks is in the gem under:
-  
+
     lib/scheduler_daemon/rails/generators/scheduler_task/templates/scheduled_tasks/example_task.rb
-    
+
 you can always copy it and make modifications, or see "Manually create tasks" below.
 
 Tasks support their own special DSL; commands are:
@@ -95,7 +97,7 @@ Here's an example task file.
 
     class CleanUpTask < Scheduler::SchedulerTask
       every '2m'
-  
+
       def run
         do_something
         log("I've done things")
