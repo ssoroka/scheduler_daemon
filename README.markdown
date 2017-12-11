@@ -2,8 +2,9 @@
 
 Rails 3+ compatible scheduler daemon (see branches for older versions).
 
-Replaces cron/rake pattern of periodically running rake tasks to perform maintenance tasks in Rails apps. Scheduler 
-Daemon is made specifically for your Rails app, and only loads the environment once, no matter how many tasks run.
+Replaces cron/rake pattern of periodically running rake tasks to perform maintenance 
+tasks in Rails apps. Scheduler Daemon is made specifically for your Rails app, and only 
+loads the environment once, no matter how many tasks run.
 
 What's so great about it? Well, I'm glad you asked!
 
@@ -29,7 +30,7 @@ As a gem with bundler, add to your `./Gemfile`:
 ```
 gem 'scheduler_daemon'
 ```
-    
+
 I pretty much assume you chose this option below and prefix most commands with `bundle exec`
 
 As a plugin (deprecated): (might be awkward to call the binary to start up the daemon...)
@@ -61,7 +62,7 @@ rails generate scheduler_task MyTaskName
 ```
 
 If you have problems with that, the template for new tasks is [here](lib/scheduler_daemon/rails/generators/scheduler_task/templates/scheduled_tasks/example_task.rb)
-    
+
 You can always copy it and make modifications, or see [Manually create tasks](#manually-create-tasks)
 
 Tasks support their own special DSL; commands are:
@@ -85,7 +86,8 @@ fire up the daemon in console mode to test it out
 bundle exec scheduler_daemon run
 ```
 
-For production environments, add the daemon to the system start-up, and capistrano deploy scripts, etc. Something like:
+For production environments, add the daemon to the system start-up, and capistrano 
+deploy scripts, etc. Something like:
 
 ```
 export RAILS_ENV=production
@@ -100,9 +102,10 @@ bundle exec scheduler_daemon start -- --only=task_name1,task_name2 --except=not_
 
 ## Manually create tasks
 
-If you don't want to use this gem with Rails, you can manually create tasks in a s`cheduled_tasks/` subdirectory and 
-start the daemon with `--skip-rails` (though it'll figure it out anyway if there's no `config/environment.rb` file in 
-the launch directory or `--dir=/path`)
+If you don't want to use this gem with Rails, you can manually create tasks in a 
+`scheduled_tasks/` subdirectory and start the daemon with `--skip-rails` (though it'll 
+figure it out anyway if there's no `config/environment.rb` file in the launch directory 
+or `--dir=/path`)
 
 Here's an example task file.
 
@@ -119,8 +122,8 @@ end
 
 ## Specs
 
-See [this example spec](scheduler_daemon/spec/scheduled_tasks/session_cleaner_task_spec.rb) for an idea on how to write 
-specs for your tasks.
+See [this example spec](scheduler_daemon/spec/scheduled_tasks/session_cleaner_task_spec.rb) 
+for an idea on how to write specs for your tasks.
 
 ## To Do
 
@@ -134,17 +137,19 @@ Submit bugs [here](http://github.com/ssoroka/scheduler_daemon/issues)
 
 ## Caveats
 
-When using the cronic gem to parse dates, be careful of how it interprets your date, for example:
+When using the cronic gem to parse dates, be careful of how it interprets your date, for 
+example:
 
 ```
 every '24h', :first_at => Chronic.parse('noon')
 ```
 
-will be once a day at noon, but the first time the server starts up (or restarts), noon is relative to the current time 
-of day. Before lunch, and it's in the future. If the daemon starts up after lunch, the date is in the past, *and the 
-task is immediately run* because it thinks it missed its last execution time. Depending on what your task is, this may 
-or may not be a problem. If you always want the date to resolve in the future with terms like "noon", "3 am" and 
-"midnight", prepend "next" to it. ie:
+will be once a day at noon, but the first time the server starts up (or restarts), noon
+is relative to the current time of day. Before lunch, and it's in the future. If the
+daemon starts up after lunch, the date is in the past, *and the task is immediately run* 
+because it thinks it missed its last execution time. Depending on what your task is, 
+this may or may not be a problem. If you always want the date to resolve in the future 
+with terms like "noon", "3 am" and "midnight", prepend "next" to it. ie:
 
 ```
 every '24h', :first_at => Chronic.parse('next noon')
