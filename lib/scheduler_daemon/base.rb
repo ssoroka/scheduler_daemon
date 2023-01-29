@@ -39,7 +39,7 @@ module Scheduler
       @env_name = @options['env_name'] || 'scheduler'
       @rufus_scheduler = nil
       @tasks = []
-      
+
       log("initialized with settings: #{@options.inspect}")
 
       if !@options['skip_init']
@@ -48,14 +48,14 @@ module Scheduler
         run_scheduler
       end
     end
-    
+
     # registers a task class with the scheduler
     def register_task(task)
-      
+
     end
-    
+
     def load_rails_env
-      if File.exists?('config/environment.rb') && !@options['skip_rails']
+      if File.exist?('config/environment.rb') && !@options['skip_rails']
         log("loading rails environment")
         require File.expand_path('./config/environment')
         @env_name = ::Rails.env
@@ -64,7 +64,7 @@ module Scheduler
       log("Error loading rails environment; #{$!.class.name}: #{$!.message}")
       raise $!
     end
-    
+
     # time redefines itself with a faster implementation, since it gets called a lot.
     def time
       if Time.respond_to?(:zone) && Time.zone
@@ -74,7 +74,7 @@ module Scheduler
       end
       time
     end
-    
+
     def log(*args)
       return if @options[:silent]
       Kernel::puts(%([#{time}] #{args.join("\n")}))

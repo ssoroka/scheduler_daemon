@@ -9,7 +9,7 @@ require 'scheduler_daemon/rails/generators/scheduler/templates/lib/scheduled_tas
 describe SessionCleanerTask do
   before(:each) do
     @task = SessionCleanerTask.new
-    @task.stub(:log)
+    # expect(@task).to receive(:log)
   end
 
   it "should remove old sessions" do
@@ -25,11 +25,12 @@ describe SessionCleanerTask do
         ActiveRecord::Base.connection.select_one(%(select count(*) as count from #{@task.session_table_name}))['count'].to_i
       }
 
-      lambda {
+      expect(lambda {
         @task.run
-      }.should change(get_session_count, :call).by_at_most(-1)
+      }).to change(get_session_count, :call).by_at_most(-1)
     else
       pending 'skipping SessionCleanerTask test since it depends on rails and ActiveRecord::SessionStore; try copying this spec to your rails application.'
+      raise 'skipping'
     end
   end
 end

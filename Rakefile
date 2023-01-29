@@ -27,7 +27,7 @@ begin
     gem.add_dependency('daemons', '>= 1.0.10')
     gem.add_dependency('rufus-scheduler', '~> 2.0.24')
     gem.add_dependency('chronic', '>= 0.2.0')
-    gem.add_development_dependency('rspec', '~> 2.13.0')
+    gem.add_development_dependency('rspec', '~> 3.12.0')
 
     gem.executables = ['scheduler_daemon']
 
