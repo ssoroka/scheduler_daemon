@@ -53,7 +53,6 @@ Gem::Specification.new do |s|
 
   s.specification_version = 4
 
-  s.add_runtime_dependency(%q<scheduler_daemon>.freeze, [">= 0"])
   s.add_development_dependency(%q<rspec>.freeze, ["~> 3.12.0"])
   s.add_runtime_dependency(%q<activesupport>.freeze, [">= 0"])
   s.add_runtime_dependency(%q<eventmachine>.freeze, [">= 0.12.8"])
